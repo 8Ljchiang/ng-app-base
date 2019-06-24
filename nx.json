@@ -7,5 +7,12 @@
     "tslint.json": "*",
     "nx.json": "*"
   },
-  "projects": {}
+  "projects": {
+    "apps-ng-app-base": {
+      "tags": []
+    },
+    "apps-ng-app-base-e2e": {
+      "tags": []
+    }
+  }
 }

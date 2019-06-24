@@ -2,13 +2,134 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "newProjectRoot": "",
-  "projects": {},
+  "projects": {
+    "apps-ng-app-base": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "apps/apps/ng-app-base",
+      "sourceRoot": "apps/apps/ng-app-base/src",
+      "prefix": "foundations",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/apps/apps/ng-app-base",
+            "index": "apps/apps/ng-app-base/src/index.html",
+            "main": "apps/apps/ng-app-base/src/main.ts",
+            "polyfills": "apps/apps/ng-app-base/src/polyfills.ts",
+            "tsConfig": "apps/apps/ng-app-base/tsconfig.app.json",
+            "assets": [
+              "apps/apps/ng-app-base/src/favicon.ico",
+              "apps/apps/ng-app-base/src/assets"
+            ],
+            "styles": ["apps/apps/ng-app-base/src/styles.css"],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "apps/apps/ng-app-base/src/environments/environment.ts",
+                  "with": "apps/apps/ng-app-base/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "apps-ng-app-base:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "apps-ng-app-base:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "apps-ng-app-base:build"
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "apps/apps/ng-app-base/tsconfig.app.json",
+              "apps/apps/ng-app-base/tsconfig.spec.json"
+            ],
+            "exclude": ["**/node_modules/**"]
+          }
+        },
+        "test": {
+          "builder": "@nrwl/jest:jest",
+          "options": {
+            "jestConfig": "apps/apps/ng-app-base/jest.config.js",
+            "tsConfig": "apps/apps/ng-app-base/tsconfig.spec.json",
+            "setupFile": "apps/apps/ng-app-base/src/test-setup.ts"
+          }
+        }
+      }
+    },
+    "apps-ng-app-base-e2e": {
+      "root": "apps/apps/ng-app-base-e2e",
+      "projectType": "application",
+      "architect": {
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "apps/apps/ng-app-base-e2e/protractor.conf.js",
+            "devServerTarget": "apps-ng-app-base:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "apps-ng-app-base:serve:production"
+            }
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": "apps/apps/ng-app-base-e2e/tsconfig.e2e.json",
+            "exclude": ["**/node_modules/**"]
+          }
+        }
+      }
+    }
+  },
   "cli": {
     "warnings": {
       "typescriptMismatch": false,
       "versionMismatch": false
     },
-    "defaultCollection": "@nrwl/workspace"
+    "defaultCollection": "@nrwl/angular"
   },
-  "schematics": {}
+  "schematics": {
+    "@nrwl/angular:application": {
+      "unitTestRunner": "jest",
+      "e2eTestRunner": "protractor"
+    },
+    "@nrwl/angular:library": {
+      "unitTestRunner": "jest"
+    }
+  },
+  "defaultProject": "apps-ng-app-base"
 }
